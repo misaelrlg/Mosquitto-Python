@@ -11,16 +11,16 @@ import time
 #mosquitto broker config
 broker = 'localhost' #localhost
 broker_port = 1883 
-broker_topic = 'Topico' #nombre del topico
-broker_user = 'galileo'
-broker_pass = 'galileo007'
+broker_topic = 'TOPIC_NAME' #nombre del topico
+broker_user = ''
+broker_pass = ''
 
 #mysql config
 config = {
 	'user': 'root',
-	'password': 'cocacola',
+	'password': '',
 	'host': 'localhost',
-	'database': 'mqtt',
+	'database': 'YOUR_DATA_BASE_NAME',
 	'option_files': '/etc/my.cnf',
 	'charset': 'utf8',
 	'use_unicode': True
@@ -41,18 +41,18 @@ def on_connect(mosq, obj, rc):
 def on_message(mosq, obj, msg):
     print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
     #change locations to the table you are using
-    queryText = "SELECT * FROM registro where id = %s"
+    queryText = "SELECT * FROM YOUR_TABLE where SOMETHING"
     try:
     	cursor.execute(queryText % msg.payload)
     	for(nombre, apellido, id) in cursor:
 		id=str(id)
 		msg.payload=str(msg.payload)
 		if (id == msg.payload):
-			mqttc.publish("acceso", "FierroPariente\0")
+			mqttc.publish("TOPIC_NAME", "MESSAGE\0")
     	print cursor.rowcount
 	if (cursor.rowcount <= 0):
 		print ("No coincide")
-		mqttc.publish("acceso","NoCoincide\0")
+		mqttc.publish("TOPIC_NAME","MESSAGE\0")
     except ValueError:
 	print "No es numero"
     except mysql.connector.errors.ProgrammingError:
