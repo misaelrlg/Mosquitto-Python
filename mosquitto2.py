@@ -51,12 +51,11 @@ def on_message(mosq, obj, msg):
 			mqttc.publish("TOPIC_NAME", "MESSAGE\0")
     	print cursor.rowcount
 	if (cursor.rowcount <= 0):
-		print ("No coincide")
 		mqttc.publish("TOPIC_NAME","MESSAGE\0")
     except ValueError:
-	print "No es numero"
+	print "Isn´t a number"
     except mysql.connector.errors.ProgrammingError:
-	print "No es Valida la consulta"
+	print "INVALID QUERY"
 def on_publish(mosq, obj, mid):
     print("mid: "+str(mid))
 
@@ -87,7 +86,7 @@ while mainloop==1:
 		dc = 0
 	  except:
 	    	my_info(0," ") 
-		print("Peligro: No se encontro la base de datos. Reintentando en 30 segundos")
+		print("WARNING: DATABASE NOT FOUND. Retrying in 30 seconds.")
 	    	time.sleep(30)
 		pass
 	rc=1
@@ -97,7 +96,7 @@ while mainloop==1:
 			rc = 0
 		except:
 			my_info(0," ")
-			print( "Peligro: No se encontro el Broker. Reintentando en 30 segundos")
+			print( "WARNING: BROKER NOT FOUND. Trying again in 30 seconds")
 			time.sleep(30)
 			pass	
 	mqttc.subscribe(broker_topic, 0)
@@ -106,7 +105,7 @@ while mainloop==1:
 			rc = mqttc.loop()
 		except:
 			rc = 1
-	print("Peligro: Error de Conexion. Reiniciando.")
+	print("WARNING: CONNECTION ERROR. RESETTING.")
 	print("rc: "+str(rc))
 	if M_INFO > 0:
 		mainloop = 0
