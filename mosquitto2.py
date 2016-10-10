@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# October 5 2016 v2.1.1
+# October 10 2016 v2.1.1
 # Modificado por Misael LG, @mrlg_13 on Twitter
 #
 # Python script (v2.7x) that subscribes to a MQTT broker topic and consults from a mysql database
